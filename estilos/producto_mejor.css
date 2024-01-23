@@ -1,0 +1,155 @@
+/* Normalizar estilos para el body y resetear márgenes */
+body, h1, h2, h3, p, div {
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilo básico para el body */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    color: #495057;
+}
+
+/* Contenedor general */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Estilos para la sección de productos */
+#productos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.producto {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 10px; /* Puedes ajustar el margen según tus necesidades */
+    width: 350px; /* Aumenta el ancho del contenedor del producto */
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.producto:hover {
+    transform: scale(1.05);
+}
+
+.producto .info-producto {
+    padding: 20px;
+}
+
+.producto .imagen-producto {
+    background-size: cover;
+    height: 200px; /* Aumenta la altura de la imagen */
+    position: relative;
+    overflow: hidden;
+}
+
+.producto .imagen-producto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.producto .acciones-producto {
+    padding-top: 10px;
+    text-align: center;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-contenido {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    width: 60%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Botones */
+button {
+    background-color: #28a745;
+    color: white;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+/* Estilos para el formulario */
+form {
+    margin-bottom: 20px;
+}
+
+input,
+textarea {
+    width: calc(100% - 20px);
+    padding: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Estilo para el botón de cerrar el modal */
+.cerrar-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Estilos para el campo de búsqueda y botones */
+#buscar {
+    padding: 12px;
+    margin-right: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+#buscar-id,
+#buscar-categoria {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+#buscar-id:hover,
+#buscar-categoria:hover {
+    background-color: #0056b3;
+}
+
+#modal-editar .imagen-producto {
+    height: 200px; /* Ajusta la altura según tus necesidades */
+}
+
+#modal-editar .imagen-producto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
