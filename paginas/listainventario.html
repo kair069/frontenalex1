@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Inventarios</title>
+    <!-- Incluir Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <style>
+        .menu {
+            display: flex;
+            flex-direction: column;
+            background-color: #333;
+            padding: 15px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 200px;
+          }
+          
+          .button {
+            text-decoration: none;
+            color: #fff;
+            padding: 10px;
+            margin: 5px 0;
+            display: block;
+          }
+          
+          .button:hover {
+            background-color: #555;
+          }
+          
+          .content {
+            margin-left: 200px;
+            padding: 20px;
+          }
+    </style>
+</head>
+
+<body>
+
+    <div class="menu">
+        <a class="button" href="../paginas/index.html" style="--color:#1e9bff;">PRODUCTOS</a>
+        <a class="button" href="../paginas/index2.html" style="--color: #ff1867;">CLIENTES</a>
+        <a class="button" href="../paginas/index3.html" style="--color: #6eff3e;">INVENTARIO</a>
+        <a class="button" href="../paginas/index4.html" style="--color: #6eff3e;">PEDIDOS</a>
+        <a class="button" href="../paginas/index5.html" style="--color: #6eff3e;">VENTAS</a>
+        <a class="button" href="../paginas/boleta.html" style="--color: #6eff3e;">BOLETA</a>
+        <a class="button" href="../paginas/proveedor.html" style="--color: #6eff3e;">PROVEDOR</a>
+        <a class="button" href="../index.html" style="--color: #6eff3e;">MENU</a>
+      </div>
+
+<div class="container mt-5">
+    <h2>Lista de Inventarios</h2>
+    <button class="btn btn-primary" onclick="obtenerInventarios()">Obtener Inventarios</button>
+
+    <div class="table-responsive mt-3">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Producto ID</th>
+                    <th>Nombre del Producto</th>
+                    <th>Precio</th>
+                    <th>Descripción del Producto</th>
+                    <th>Categoría</th>
+                    <th>URL de la Imagen</th>
+                    <th>Cantidad</th>
+                    <th>Fecha de Ingreso</th>
+                    <th>Fecha de Caducidad</th>
+                    <th>Kilometraje Último Cambio</th>
+                    <th>Tipo de Aceite</th>
+                    <th>Marca de Aceite</th>
+                    <th>Proveedor ID</th>
+                    <th>Nombre del Proveedor</th>
+                    <th>Dirección del Proveedor</th>
+                    <th>Correo Electrónico del Proveedor</th>
+                    <th>Sitio Web del Proveedor</th>
+                </tr>
+            </thead>
+            <tbody id="tablaInventarios">
+                <!-- Aquí se mostrarán los datos de la API -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Incluir Bootstrap JS y jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script>
+    function obtenerInventarios() {
+        $.ajax({
+            url: "https://backendalex.azurewebsites.net/inventarios",
+            type: "GET",
+            success: function(data) {
+                // Limpia la tabla antes de agregar nuevos datos
+                $("#tablaInventarios").empty();
+
+                // Itera sobre los datos y agrega filas a la tabla
+                data.forEach(function(inventario) {
+                    $("#tablaInventarios").append(
+                        "<tr>" +
+                            "<td>" + inventario.id + "</td>" +
+                            "<td>" + inventario.producto.id + "</td>" +
+                            "<td>" + inventario.producto.nombre + "</td>" +
+                            "<td>" + inventario.producto.precio + "</td>" +
+                            "<td>" + inventario.producto.descripcion + "</td>" +
+                            "<td>" + inventario.producto.categoria + "</td>" +
+                            "<td><img src='" + inventario.producto.urlImagen + "' alt='Imagen del Producto' style='max-width: 100px;'></td>" +
+                            "<td>" + inventario.cantidad + "</td>" +
+                            "<td>" + inventario.fechaIngreso + "</td>" +
+                            "<td>" + inventario.fechaCaducidad + "</td>" +
+                            "<td>" + inventario.kilometrajeUltimoCambio + "</td>" +
+                            "<td>" + inventario.tipoAceite + "</td>" +
+                            "<td>" + inventario.marcaAceite + "</td>" +
+                            "<td>" + inventario.proveedor.id + "</td>" +
+                            "<td>" + inventario.proveedor.nombre + "</td>" +
+                            "<td>" + inventario.proveedor.direccion + "</td>" +
+                            "<td>" + inventario.proveedor.correoElectronico + "</td>" +
+                            "<td>" + inventario.proveedor.sitioWeb + "</td>" +
+                        "</tr>"
+                    );
+                });
+            },
+            error: function(error) {
+                console.error("Error al obtener inventarios:", error);
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

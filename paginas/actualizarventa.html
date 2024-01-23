@@ -1,0 +1,313 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar Venta</title>
+    <!-- Agrega la referencia a Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #007bff;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+                /* Estilo para el mensaje de éxito */
+                .success-message {
+                    display: none;
+                    margin-top: 20px;
+                    padding: 10px;
+                    background-color: #d4edda;
+                    border: 1px solid #c3e6cb;
+                    border-radius: 4px;
+                    color: #155724;
+                }
+        
+                .check-icon {
+                    color: #155724;
+                }
+
+                        /* Estilo para el mensaje de éxito en el modal */
+        .modal-success-message {
+            color: #155724;
+            font-size: 24px;
+        }
+
+    
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Actualizar Venta</h1>
+
+        <form id="updateForm">
+            <div class="form-group">
+                <label for="ventaId">ID de Venta:</label>
+                <input type="text" class="form-control" id="ventaId" name="ventaId" required>
+            </div>
+
+            <div class="form-group">
+                <label for="clienteId">ID de Cliente:</label>
+                <!-- Cambia el tipo de entrada a number y agrega los atributos min, max y step para el deslizador -->
+                <input type="number" class="form-control" id="clienteId" name="clienteId" min="1" max="100" step="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="marcaVehiculo">Marca del Vehículo:</label>
+                <!-- Utiliza el elemento select para crear una lista desplegable -->
+                <select class="form-control" id="marcaVehiculo" name="marcaVehiculo" required>
+                    <!-- Opciones para la lista desplegable -->
+                    <option value="Toyota">Toyota</option>
+                    <option value="Datsun">Datsun</option>
+                    <option value="Ford">Ford</option>
+                    <option value="Nissan">Nissan</option>
+                    <!-- Puedes agregar más opciones según sea necesario -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="modeloVehiculo">Modelo del Vehículo:</label>
+                <!-- Utiliza el elemento select para crear una lista desplegable -->
+                <select class="form-control" id="modeloVehiculo" name="modeloVehiculo" required>
+                    <!-- Opciones para la lista desplegable -->
+                    <option value="Modelo1">Modelo serie A</option>
+                    <option value="Modelo2">Modelo serie B</option>
+                    <option value="Modelo3">Modelo serie c</option>
+                    <!-- Puedes agregar más opciones según sea necesario -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="anoVehiculo">Año del Vehículo:</label>
+                <!-- Utiliza el elemento select de Bootstrap -->
+                <select class="form-control" id="anoVehiculo" name="anoVehiculo" required>
+                    <!-- Genera opciones desde 1800 hasta 2016 -->
+                    <script>
+                        var currentYear = new Date().getFullYear();
+                        for (var i = 1800; i <= currentYear; i++) {
+                            document.write("<option value='" + i + "'>" + i + "</option>");
+                        }
+                    </script>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="tipoAceite">Tipo de Aceite:</label>
+                <!-- Utiliza el elemento select de Bootstrap -->
+                <select class="form-control" id="tipoAceite" name="tipoAceite" required>
+                    <!-- Opciones para diferentes tipos de aceite -->
+                    <option value="gas">Gas</option>
+                    <option value="gasolina">Gasolina</option>
+                    <option value="petroleo">Petróleo</option>
+                    <!-- Agrega más opciones según sea necesario -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="cantidadAceite">Cantidad de Aceite:</label>
+                <input type="number" class="form-control" id="cantidadAceite" name="cantidadAceite" required>
+            </div>
+
+            <div class="form-group">
+                <label for="kilometrajeActual">Kilometraje Actual:</label>
+                <!-- Utiliza el elemento select de Bootstrap -->
+                <select class="form-control" id="kilometrajeActual" name="kilometrajeActual" required>
+                    <!-- Opciones para diferentes valores de kilometraje -->
+                    <option value="10000">10,000 km</option>
+                    <option value="20000">20,000 km</option>
+                    <option value="30000">30,000 km</option>
+                    <option value="40000">40,000 km</option>
+                    <!-- Agrega más opciones según sea necesario -->
+                </select>
+            </div>
+            
+
+            <div class="form-group">
+                <label for="cambioFiltroAceite">¿Cambio de Filtro de Aceite?</label>
+                <select class="form-control" id="cambioFiltroAceite" name="cambioFiltroAceite" required>
+                    <option value="true">Sí</option>
+                    <option value="false">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="cambioOtrosFluidos">¿Cambio de Otros Fluidos?</label>
+                <select class="form-control" id="cambioOtrosFluidos" name="cambioOtrosFluidos" required>
+                    <option value="true">Sí</option>
+                    <option value="false">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="notasInspeccion">Notas de Inspección:</label>
+                <textarea class="form-control" id="notasInspeccion" name="notasInspeccion" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="costoAceite">Costo de Aceite:</label>
+                <input type="number" class="form-control" id="costoAceite" name="costoAceite" required>
+            </div>
+
+            <div class="form-group">
+                <label for="costoServicio">Costo de Servicio:</label>
+                <input type="number" class="form-control" id="costoServicio" name="costoServicio" required>
+            </div>
+
+            <div class="form-group">
+                <label for="estadoVehiculo">Estado del Vehículo:</label>
+                <input type="text" class="form-control" id="estadoVehiculo" name="estadoVehiculo" required>
+            </div>
+
+            <div class="form-group">
+                <label for="recomendaciones">Recomendaciones:</label>
+                <textarea class="form-control" id="recomendaciones" name="recomendaciones" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="tecnicoEncargado">Técnico Encargado:</label>
+                <input type="text" class="form-control" id="tecnicoEncargado" name="tecnicoEncargado" required>
+            </div>
+
+            <button type="button" class="btn btn-primary" onclick="updateVenta()">Actualizar Venta</button>
+        </form>
+        <div id="infoVenta"></div>
+
+        <div class="success-message" id="successMessage">
+            <span class="check-icon">&#10004;</span> Actualización exitosa
+        </div>
+    </div>
+    <div class="modal" id="successModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Contenido del modal -->
+                <div class="modal-body">
+                    <span class="check-icon">&#10004;</span>
+                    <p class="modal-success-message">Actualización exitosa</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+<!-- Agrega este enlace a jQuery antes del cierre del body -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<!-- Agrega la referencia a Bootstrap después de jQuery -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+
+        function openSuccessModal() {
+            // Abre el modal de éxito
+            $('#successModal').modal('show');
+        
+            // Simula el cierre del modal después de 5 segundos
+            setTimeout(function() {
+                $('#successModal').modal('hide');
+            }, 5000);
+        }
+        
+        function updateVenta() {
+            // Obtén los valores del formulario
+            var ventaId = document.getElementById("ventaId").value;
+            var clienteId = document.getElementById("clienteId").value;
+            var marcaVehiculo = document.getElementById("marcaVehiculo").value;
+            var modeloVehiculo = document.getElementById("modeloVehiculo").value;
+            var anoVehiculo = document.getElementById("anoVehiculo").value;
+            var tipoAceite = document.getElementById("tipoAceite").value;
+            var cantidadAceite = document.getElementById("cantidadAceite").value;
+            var kilometrajeActual = document.getElementById("kilometrajeActual").value;
+            var cambioFiltroAceite = document.getElementById("cambioFiltroAceite").value === "true";
+            var cambioOtrosFluidos = document.getElementById("cambioOtrosFluidos").value === "true";
+            var notasInspeccion = document.getElementById("notasInspeccion").value;
+            var costoAceite = document.getElementById("costoAceite").value;
+            var costoServicio = document.getElementById("costoServicio").value;
+            var estadoVehiculo = document.getElementById("estadoVehiculo").value;
+            var recomendaciones = document.getElementById("recomendaciones").value;
+            var tecnicoEncargado = document.getElementById("tecnicoEncargado").value;
+        
+            // Construye la URL de la solicitud PUT
+            var apiUrl = 'https://backendalex.azurewebsites.net/ventas/' + ventaId;
+        
+            // Construye el objeto con la información actualizada
+            var updatedVenta = {
+                "id": ventaId,
+                "cliente": {
+                    "id": clienteId
+                },
+                "marcaVehiculo": marcaVehiculo,
+                "modeloVehiculo": modeloVehiculo,
+                "anoVehiculo": anoVehiculo,
+                "tipoAceite": tipoAceite,
+                "cantidadAceite": cantidadAceite,
+                "kilometrajeActual": kilometrajeActual,
+                "cambioFiltroAceite": cambioFiltroAceite,
+                "cambioOtrosFluidos": cambioOtrosFluidos,
+                "notasInspeccion": notasInspeccion,
+                "costoAceite": costoAceite,
+                "costoServicio": costoServicio,
+                "estadoVehiculo": estadoVehiculo,
+                "recomendaciones": recomendaciones,
+                "tecnicoEncargado": tecnicoEncargado
+            };
+        
+            // Realiza la solicitud PUT al servidor
+            fetch(apiUrl, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedVenta),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Respuesta del servidor:', data);
+                openSuccessModal();
+                // Puedes manejar la respuesta del servidor aquí
+            })
+            .catch((error) => {
+                console.error('Error al enviar la solicitud:', error);
+            });
+        }
+        
+    </script>
+</body>
+</html>

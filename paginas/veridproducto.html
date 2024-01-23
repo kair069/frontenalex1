@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Productos</title>
+    <!-- Incluir Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        /* Añadir estilos personalizados si es necesario */
+        body {
+            padding: 20px;
+        }
+        #productos {
+            margin-top: 20px;
+        }
+        .producto-card {
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .producto-card:hover {
+            transform: scale(1.1);
+        }
+        .producto-id {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .producto-imagen {
+            max-width: 100%; /* Ajusta el tamaño máximo de la imagen */
+            height: 600px; /* Ajusta la altura fija de la imagen */
+            object-fit: cover; /* Ajusta la forma en que la imagen cubre su cuadro */
+        }
+        .menu {
+            display: flex;
+            flex-direction: column;
+            background-color: #333;
+            padding: 15px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 200px;
+        }
+
+        .button {
+            text-decoration: none;
+            color: #fff;
+            padding: 10px;
+            margin: 5px 0;
+            display: block;
+        }
+
+        .button:hover {
+            background-color: #555;
+        }
+
+        .content {
+            margin-left: 200px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="menu">
+        <a class="button" href="../paginas/index.html" style="--color:#1e9bff;">PRODUCTOS</a>
+        <a class="button" href="../paginas/index2.html" style="--color: #ff1867;">CLIENTES</a>
+        <a class="button" href="../paginas/index3.html" style="--color: #6eff3e;">INVENTARIO</a>
+        <a class="button" href="../paginas/index4.html" style="--color: #6eff3e;">PEDIDOS</a>
+        <a class="button" href="../paginas/index5.html" style="--color: #6eff3e;">VENTAS</a>
+        <a class="button" href="../paginas/boleta.html" style="--color: #6eff3e;">BOLETA</a>
+        <a class="button" href="../paginas/proveedor.html" style="--color: #6eff3e;">PROVEDOR</a>
+        <a class="button" href="../index.html" style="--color: #6eff3e;">MENU</a>
+      </div>
+
+<div class="container">
+    <h2 class="mt-4">Lista de Productos</h2>
+
+    <div class="row">
+        <div class="col-md-8">
+            <label for="productoId">Ingrese el ID del Producto:</label>
+            <div class="input-group mb-3">
+                <input type="text" id="productoId" class="form-control">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" onclick="obtenerProducto()">Obtener Producto</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="productos" class="mt-4"></div>
+</div>
+
+<!-- Incluir Bootstrap JS y jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script>
+    // Ejecutar la función al cargar la página
+    window.onload = function() {
+        listarProductos();
+    };
+
+    function listarProductos() {
+        // Realizar la solicitud AJAX para obtener todos los productos
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    // Manejar la respuesta del servidor
+                    mostrarProductos(JSON.parse(xhr.responseText));
+                } else {
+                    // Manejar errores
+                    document.getElementById("productos").innerHTML = "Error al obtener los productos";
+                }
+            }
+        };
+
+        // Definir la URL de la API para obtener todos los productos
+        var url = "https://backendalex.azurewebsites.net/productos";
+
+        // Abrir la conexión y enviar la solicitud
+        xhr.open("GET", url, true);
+        xhr.send();
+    }
+
+    function obtenerProducto() {
+        // Obtener el valor del input
+        var productoId = document.getElementById("productoId").value;
+
+        // Realizar la solicitud AJAX para obtener un producto por ID
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    // Manejar la respuesta del servidor
+                    mostrarResultado(JSON.parse(xhr.responseText));
+                } else {
+                    // Manejar errores
+                    mostrarResultado("Error al obtener el producto");
+                }
+            }
+        };
+
+        // Definir la URL de la API para obtener un producto por ID
+        var url = "https://backendalex.azurewebsites.net/productos/" + productoId;
+
+        // Abrir la conexión y enviar la solicitud
+        xhr.open("GET", url, true);
+        xhr.send();
+    }
+
+    function mostrarProductos(data) {
+        // Limpiar el resultado anterior
+        document.getElementById("productos").innerHTML = "";
+
+        // Mostrar cada producto en el elemento "productos"
+        data.forEach(function(producto) {
+            var resultadoHTML = "<div class='card mt-2 producto-card'>" +
+                                "<img src='" + producto.urlImagen + "' class='card-img-top producto-imagen' alt='Producto Image'>" +
+                                "<div class='card-body'>" +
+                                "<p class='producto-id'>" + producto.id + "</p>" +
+                                "<strong>Nombre:</strong> " + producto.nombre + "<br>" +
+                                "<strong>Precio:</strong> " + producto.precio + "<br>" +
+                                "<strong>Descripción:</strong> " + producto.descripcion +
+                                "</div></div>";
+
+            // Agregar el HTML al elemento "productos"
+            document.getElementById("productos").innerHTML += resultadoHTML;
+        });
+    }
+
+    function mostrarResultado(data) {
+        // Limpiar el resultado anterior
+        document.getElementById("productos").innerHTML = "";
+
+        // Verificar si es solo el ID o el objeto completo
+        if (typeof data === "number") {
+            // Mostrar solo el ID
+            document.getElementById("productos").innerHTML = "ID del Producto: " + data;
+        } else {
+            // Mostrar el objeto completo del producto
+            var resultadoHTML = "<div class='card mt-2 producto-card'>" +
+                                "<img src='" + data.urlImagen + "' class='card-img-top producto-imagen' alt='Producto Image'>" +
+                                "<div class='card-body'>" +
+                                "<p class='producto-id'>" + data.id + "</p>" +
+                                "<strong>Nombre:</strong> " + data.nombre + "<br>" +
+                                "<strong>Precio:</strong> " + data.precio + "<br>" +
+                                "<strong>Descripción:</strong> " + data.descripcion +
+                                "</div></div>";
+
+            document.getElementById("productos").innerHTML = resultadoHTML;
+        }
+    }
+</script>
+
+</body>
+</html>

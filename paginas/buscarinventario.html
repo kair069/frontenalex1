@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consumir API</title>
+    <!-- Agrega la referencia a Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+            background-color: #333;
+            padding: 15px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 200px;
+            color: #fff;
+        }
+
+        .button {
+            text-decoration: none;
+            color: inherit;
+            padding: 10px;
+            margin: 5px 0;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #555;
+        }
+
+        .content {
+            margin-left: 200px;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        label {
+            margin-top: 10px;
+        }
+
+        input {
+            margin-bottom: 10px;
+        }
+
+        button {
+            width: 100%;
+        }
+
+        .card {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body class="container">
+    <div class="menu">
+        <a class="button" href="../paginas/index.html" style="--color:#1e9bff;">PRODUCTOS</a>
+        <a class="button" href="../paginas/index2.html" style="--color: #ff1867;">CLIENTES</a>
+        <a class="button" href="../paginas/index3.html" style="--color: #6eff3e;">INVENTARIO</a>
+        <a class="button" href="../paginas/index4.html" style="--color: #6eff3e;">PEDIDOS</a>
+        <a class="button" href="../paginas/index5.html" style="--color: #6eff3e;">VENTAS</a>
+        <a class="button" href="../paginas/boleta.html" style="--color: #6eff3e;">BOLETA</a>
+        <a class="button" href="../paginas/proveedor.html" style="--color: #6eff3e;">PROVEEDOR</a>
+        <a class="button" href="../index.html" style="--color: #6eff3e;">MENU</a>
+    </div>
+
+    <div class="content">
+
+        <h1>Buscar por Nombre</h1>
+        <label for="nombreInput">Nombre:</label>
+        <input type="text" id="nombreInput" class="form-control mb-2">
+        <button onclick="buscarPorNombre()" class="btn btn-primary mb-3">Buscar</button>
+        <div id="resultadoNombre" class="row"></div>
+
+        <h1>Buscar por Proveedor</h1>
+        <label for="proveedorIdInput">ID de Proveedor:</label>
+        <input type="text" id="proveedorIdInput" class="form-control mb-2">
+        <button onclick="buscarPorProveedor()" class="btn btn-primary mb-3">Buscar</button>
+        <div id="resultadoProveedor" class="row"></div>
+
+    </div>
+
+    <script>
+        const apiUrl = 'https://backendalex.azurewebsites.net/inventarios'; // Reemplaza 'puerto' con el puerto real
+
+        function mostrarResultado(elementId, data) {
+            const resultadoElement = document.getElementById(elementId);
+            resultadoElement.innerHTML = '';
+
+            if (data.length === 0) {
+                resultadoElement.innerHTML = '<p class="text-muted">No se encontraron resultados.</p>';
+            } else {
+                data.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.classList.add('col-md-4', 'mb-4');
+                    itemElement.innerHTML = `
+                        <div class="card">
+                            <img src="${item.producto.urlImagen}" class="card-img-top" alt="${item.producto.nombre}">
+                            <div class="card-body">
+                                <h5 class="card-title">${item.producto.nombre}</h5>
+                                <p class="card-text">Cantidad: ${item.cantidad}</p>
+                                <p class="card-text">Fecha Ingreso: ${item.fechaIngreso}</p>
+                            </div>
+                        </div>
+                    `;
+                    resultadoElement.appendChild(itemElement);
+                });
+            }
+        }
+
+        function buscarPorNombre() {
+            const nombre = document.getElementById('nombreInput').value;
+            console.log('Nombre:', nombre);
+
+            const url = `${apiUrl}/buscarPorNombre/${nombre}`;
+
+            $.get(url, function(data) {
+                mostrarResultado('resultadoNombre', data);
+            });
+        }
+
+        function buscarPorProveedor() {
+            const proveedorId = document.getElementById('proveedorIdInput').value;
+            console.log('Proveedor ID:', proveedorId);
+
+            const url = `${apiUrl}/buscarPorProveedor/${proveedorId}`;
+
+            $.get(url, function(data) {
+                mostrarResultado('resultadoProveedor', data);
+            });
+        }
+    </script>
+
+    <!-- Agrega la referencia a Bootstrap JS y Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

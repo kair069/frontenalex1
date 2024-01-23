@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exportar CSV</title>
+</head>
+<body>
+    <button onclick="exportarCSV()">Exportar CSV</button>
+
+    <script>
+        function exportarCSV() {
+            // URL del endpoint en tu servidor
+            const apiUrl = 'https://backendalex.azurewebsites.net/ventas/exportarCSV';
+
+            // Realizar la solicitud GET al servidor
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    // Crear un enlace (link) para descargar el archivo
+                    const link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(new Blob([blob]));
+                    link.setAttribute('download', 'ventas.csv');
+                    document.body.appendChild(link);
+
+                    // Simular clic en el enlace para iniciar la descarga
+                    link.click();
+
+                    // Eliminar el enlace después de la descarga
+                    document.body.removeChild(link);
+                })
+                .catch(error => {
+                    console.error('Error al exportar CSV:', error);
+                    alert('Error al exportar CSV. Consulta la consola para obtener más detalles.');
+                });
+        }
+    </script>
+</body>
+</html>

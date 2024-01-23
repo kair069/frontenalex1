@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Venta</title>
+    <!-- Agrega la referencia a Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Estilos CSS mejorados */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #007bff;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #totalVenta, #porcentajeImpuesto, #totalConImpuesto {
+            font-size: 2em;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold; /* Texto en negrita */
+        }
+
+        /* Agrega estilos adicionales según sea necesario */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Detalle de Venta</h1>
+
+        <!-- Agrega un campo de entrada para el ID de la venta -->
+        <div class="form-group">
+            <label for="ventaId">ID de Venta:</label>
+            <input type="text" class="form-control" id="ventaId" placeholder="Ingrese el ID de la venta">
+        </div>
+
+        <button type="button" class="btn btn-primary" onclick="cargarInformacionVenta()">Cargar Información</button>
+
+        <div id="totalVenta"></div>
+        <div id="porcentajeImpuesto"></div>
+        <div id="totalConImpuesto"></div>
+
+        <!-- Agrega aquí otros elementos necesarios -->
+
+    </div>
+
+    <!-- Agrega la referencia a Bootstrap JS y Popper.js (necesarios para algunos componentes de Bootstrap) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Función para cargar la información de la venta
+        function cargarInformacionVenta() {
+            // Obtiene el valor del campo de entrada para el ID de la venta
+            var ventaId = document.getElementById("ventaId").value;
+
+            // Verifica si se ingresó un ID de venta válido
+            if (!ventaId) {
+                alert("Por favor, ingrese un ID de venta válido.");
+                return;
+            }
+
+            // URL de los endpoints para calcular el total, impuesto y total con impuesto
+            var apiUrlTotal = 'https://backendalex.azurewebsites.net/ventas/' + ventaId + '/total';
+            var apiUrlImpuesto = 'https://backendalex.azurewebsites.net/ventas/' + ventaId + '/calcularImpuesto';
+            var apiUrlTotalConImpuesto = 'https://backendalex.azurewebsites.net/ventas/' + ventaId + '/totalConImpuesto';
+
+            // Realiza la solicitud GET al servidor para el total de la venta
+            fetch(apiUrlTotal)
+                .then(response => response.json())
+                .then(data => {
+                    // Muestra la información en el frontend
+                    document.getElementById("totalVenta").innerHTML = '<p>Total de la venta: ' + data + '</p>';
+                })
+                .catch((error) => {
+                    console.error('Error al obtener el total de la venta:', error);
+                });
+
+            // Realiza la solicitud GET al servidor para el impuesto
+            fetch(apiUrlImpuesto)
+                .then(response => response.json())
+                .then(data => {
+                    // Muestra la información en el frontend
+                    document.getElementById("porcentajeImpuesto").innerHTML = '<p>18% de la venta: ' + data + '</p>';
+                })
+                .catch((error) => {
+                    console.error('Error al obtener el impuesto:', error);
+                });
+
+            // Realiza la solicitud GET al servidor para el total con impuesto
+            fetch(apiUrlTotalConImpuesto)
+                .then(response => response.json())
+                .then(data => {
+                    // Muestra la información en el frontend
+                    document.getElementById("totalConImpuesto").innerHTML = '<p>Total con impuesto (18%): ' + data + '</p>';
+                })
+                .catch((error) => {
+                    console.error('Error al obtener el total con impuesto:', error);
+                });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tu Aplicación</title>
+  <link rel="stylesheet" href="../estilos/producto_mejor.css">
+  <!-- Agrega aquí tus enlaces a hojas de estilo, si es necesario -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../estilos/producto_mejor.css">
+</head>
+<style>
+  .menu {
+    display: flex;
+    flex-direction: column;
+    background-color: #333;
+    padding: 15px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 200px;
+  }
+  
+  .button {
+    text-decoration: none;
+    color: #fff;
+    padding: 10px;
+    margin: 5px 0;
+    display: block;
+  }
+  
+  .button:hover {
+    background-color: #555;
+  }
+  
+  .content {
+    margin-left: 200px;
+    padding: 20px;
+  }
+</style>
+
+<body class="bg-light">
+  <div class="menu">
+    <a class="button" href="../paginas/index.html" style="--color:#1e9bff;">PRODUCTOS</a>
+    <a class="button" href="../paginas/index2.html" style="--color: #ff1867;">CLIENTES</a>
+    <a class="button" href="../paginas/index3.html" style="--color: #6eff3e;">INVENTARIO</a>
+    <a class="button" href="../paginas/index4.html" style="--color: #6eff3e;">PEDIDOS</a>
+    <a class="button" href="../paginas/index5.html" style="--color: #6eff3e;">VENTAS</a>
+    <a class="button" href="../paginas/boleta.html" style="--color: #6eff3e;">BOLETA</a>
+    <a class="button" href="../paginas/proveedor.html" style="--color: #6eff3e;">PROVEDOR</a>
+    <a class="button" href="../index.html" style="--color: #6eff3e;">MENU</a>
+  </div>
+  <div class="container mt-4">
+      <!-- Agrega tu modal de creación de producto -->
+      <div id="boleta-modal" class="modal">
+          <!-- Contenido del modal de creación -->
+      </div>
+      <button class="btn btn-primary"  onclick="irAIndex()">Ir al listado del inventario</button>
+      <br>
+      <br>
+
+      <!-- Agrega tu modal de edición de producto -->
+      <div id="modal-editar" class="modal">
+          <div class="modal-content">
+              <span class="cerrar-modal" onclick="cerrarModalEditar()">&times;</span>
+              <h2 class="mb-4">Editar Producto</h2>
+              <form id="formulario-editar">
+                  <input type="hidden" id="editId" />
+                  <div class="form-group">
+                      <label for="editNombre">Nombre:</label>
+                      <input type="text" class="form-control" id="editNombre" required />
+                  </div>
+                  <div class="form-group">
+                      <label for="editPrecio">Precio:</label>
+                      <input type="number" step="0.01" class="form-control" id="editPrecio" required />
+                  </div>
+                  <div class="form-group">
+                      <label for="editDescripcion">Descripción:</label>
+                      <textarea class="form-control" id="editDescripcion"></textarea>
+                  </div>
+                  <div class="form-group">
+                      <label for="editCategoria">Categoría:</label>
+                      <input type="text" class="form-control" id="editCategoria" />
+                  </div>
+                  <div class="form-group">
+                      <label for="editUrlImagen">URL de la Imagen:</label>
+                      <input type="text" class="form-control" id="editUrlImagen" />
+                  </div>
+                  <div class="form-group">
+                      <label for="editStock">Stock:</label>
+                      <input type="number" class="form-control" id="editStock" required />
+                  </div>
+                  <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+              </form>
+          </div>
+      </div>
+
+      <!-- Formulario de búsqueda -->
+      <form id="formulario-busqueda">
+          <div class="form-row">
+              <div class="form-group col-md-6">
+                  <label for="buscar-nombre">Buscar por nombre:</label>
+                  <input type="text" class="form-control" id="buscar-nombre" placeholder="Nombre">
+              </div>
+              <div class="form-group col-md-6">
+                  <label for="categoria-busqueda">Buscar por Categoría:</label>
+                  <input type="text" class="form-control" id="categoria-busqueda" placeholder="Categoría">
+              </div>
+          </div>
+          <button type="button" class="btn btn-primary" onclick="realizarBusqueda()">Buscar</button>
+      </form>
+
+      <!-- Formulario de creación de producto -->
+      <form id="formulario-producto">
+          <div class="form-row">
+              <div class="form-group col-md-6">
+                  <label for="nombre">Nombre del producto:</label>
+                  <input type="text" class="form-control" id="nombre" placeholder="Nombre" required>
+              </div>
+              <div class="form-group col-md-6">
+                  <label for="precio">Precio:</label>
+                  <input type="number" step="0.01" class="form-control" id="precio" placeholder="Precio" required>
+              </div>
+          </div>
+          <div class="form-group">
+              <label for="descripcion">Descripción:</label>
+              <input type="text" class="form-control" id="descripcion" placeholder="Descripción">
+          </div>
+          <div class="form-group">
+              <label for="categoria">Categoría:</label>
+              <input type="text" class="form-control" id="categoria" placeholder="Categoría">
+          </div>
+          <div class="form-group">
+              <label for="urlImagen">URL de la Imagen:</label>
+              <input type="text" class="form-control" id="urlImagen" placeholder="URL de la Imagen">
+          </div>
+          <div class="form-group">
+              <label for="stock">Stock:</label>
+              <input type="number" class="form-control" id="stock" placeholder="Stock" required>
+          </div>
+          <button type="submit" class="btn btn-success">Crear Producto</button>
+      </form>
+
+      <!-- Sección de productos -->
+      <div id="productos" class="row"></div>
+  </div>
+
+  <!-- Agrega tu campo de búsqueda -->
+
+
+
+
+  <!-- Agrega tus scripts -->
+  <script src="../scripts/main.js"></script>
+  <script>
+    function obtenerLinkImagen(urlImagen) {
+      // Si el API proporciona la URL completa de la imagen, simplemente devuélvela
+      return urlImagen;
+    }
+  </script>
+</body>
+
+</html>
+
+<script>
+  (function () {
+    document.addEventListener('DOMContentLoaded', () => {
+        obtenerProductos();
+
+        document.getElementById('formulario-producto').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const nombre = document.getElementById('nombre').value;
+            const precio = document.getElementById('precio').value;
+            const descripcion = document.getElementById('descripcion').value;
+            const categoria = document.getElementById('categoria').value;
+            const urlImagen = document.getElementById('urlImagen').value;
+            const stock = document.getElementById('stock').value;
+
+            crearProducto({ nombre, precio, descripcion, categoria, urlImagen, stock });
+        });
+
+        document.getElementById('formulario-editar').addEventListener('submit', function (event) {
+            event.preventDefault();
+            guardarEdicion();
+        });
+
+        document.getElementById('formulario-busqueda').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const categoriaBusqueda = document.getElementById('categoria-busqueda').value.toLowerCase();
+            const nombreBusqueda = document.getElementById('buscar-nombre').value;
+            buscarPorNombreYCategoria(nombreBusqueda, categoriaBusqueda);
+        });
+
+        document.getElementById('buscar-nombre').addEventListener('input', function (event) {
+            const nombre = document.getElementById('buscar-nombre').value;
+            const categoriaBusqueda = document.getElementById('categoria-busqueda').value.toLowerCase();
+            
+            // Realizar búsqueda solo si al menos uno de los campos tiene contenido
+            if (nombre || categoriaBusqueda) {
+                buscarPorNombreYCategoria(nombre, categoriaBusqueda);
+            }
+        });
+    });
+
+    function obtenerProductos(categoria = '') {
+        const endpoint = categoria ? `https://backendalex.azurewebsites.net/productos/categoria/${categoria}` : 'https://backendalex.azurewebsites.net/productos';
+
+        fetch(endpoint)
+            .then(response => response.json())
+            .then(data => {
+                mostrarProductos(data);
+            })
+            .catch(error => {
+                console.error('Error en la solicitud:', error);
+            });
+    }
+
+    function buscarPorNombreYCategoria(nombre, categoria) {
+        // Verificar si se proporciona nombre y/o categoría y llamar a la API correspondiente
+        if (nombre && categoria) {
+            // Buscar por nombre y categoría
+            fetch(`https://backendalex.azurewebsites.net/productos/nombre/${nombre}`)
+                .then(response => response.json())
+                .then(data => {
+                    mostrarProductos(data);
+                })
+                .catch(error => {
+                    console.error('Error en la solicitud:', error);
+                });
+        } else if (nombre) {
+            // Buscar solo por nombre
+            fetch(`https://backendalex.azurewebsites.net/productos/nombre/${nombre}`)
+                .then(response => response.json())
+                .then(data => {
+                    mostrarProductos(data);
+                })
+                .catch(error => {
+                    console.error('Error en la solicitud:', error);
+                });
+        } else if (categoria) {
+            // Buscar solo por categoría
+            fetch(`https://backendalex.azurewebsites.net/productos/categoria/${categoria}`)
+                .then(response => response.json())
+                .then(data => {
+                    mostrarProductos(data);
+                })
+                .catch(error => {
+                    console.error('Error en la solicitud:', error);
+                });
+        }
+    }
+
+    function mostrarProductos(productos) {
+        const productosSection = document.getElementById('productos');
+        productosSection.innerHTML = '';
+
+        if (Array.isArray(productos)) {
+            productos.forEach(producto => {
+                const productoElement = document.createElement('div');
+                productoElement.classList.add('producto');
+
+                const imagenLink = obtenerLinkImagen(producto.urlImagen);
+
+                productoElement.innerHTML = `
+                    <div class="info-producto">
+                        <h3>${producto.nombre}</h3>
+                        <p>Precio: ${producto.precio}</p>
+                        <p>Descripción: ${producto.descripcion}</p>
+                        <p>Categoría: ${producto.categoria}</p>
+                        <p>Stock: ${producto.stock}</p>
+                    </div>
+                    <div class="imagen-producto">
+                        <img src="${imagenLink}" alt="${producto.nombre}">
+                    </div>
+                    <div class="acciones-producto">
+                        <button onclick="editarProducto(${producto.id})">Editar</button>
+                        <button onclick="eliminarProducto(${producto.id})">Eliminar</button>
+                    </div>
+                `;
+                productosSection.appendChild(productoElement);
+            });
+        } else {
+            console.error('El servidor no ha devuelto un array de productos:', productos);
+        }
+    }
+
+
+    // Resto del código...
+
+    function obtenerLinkImagen(urlImagen) {
+      // Si el API proporciona la URL completa de la imagen, simplemente devuélvela
+      return urlImagen;
+    }
+  })();
+  function irAIndex() {
+    // Redirigir a index.html
+    window.location.href = 'veridproducto.html';
+}
+</script>
